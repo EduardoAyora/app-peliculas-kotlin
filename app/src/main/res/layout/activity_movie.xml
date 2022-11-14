@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:paddingBottom="30dp"
             android:orientation="vertical">
 
             <TextView
@@ -131,6 +132,13 @@
 
             <TextView
                 android:id="@+id/txtimdbRatingMovie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/txtimdbVotesMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
