@@ -29,134 +29,137 @@
                 android:id="@+id/txtTitleMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Hola" />
+                android:layout_marginTop="20dp"
+                android:text=""
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/txtRatedMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Mundo" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtReleasedMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtWriterMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtActorsMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtGenreMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtYearMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtDirectorMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtRuntimeMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtPlotMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtLanguageMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtCountryMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtAwardsMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtRatingsMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtMetascoreMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtimdbRatingMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtimdbVotesMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/txtDVDMovie"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/txtBoxOfficeMovie"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="TextView" />
+                android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:text="" />
 
         </LinearLayout>
     </ScrollView>

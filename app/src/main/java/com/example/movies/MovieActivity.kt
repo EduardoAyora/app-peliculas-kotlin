@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
@@ -45,14 +46,20 @@ class MovieActivity : AppCompatActivity() {
                 val plot = response.getString("Plot")
                 val language = response.getString("Language")
                 val country = response.getString("Country")
-                val awards = response.getString("Awards")
-                val ratings = response.getString("Ratings")
                 val metascore = response.getString("Metascore")
                 val imdbRating = response.getString("imdbRating")
                 val imdbVotes = response.getString("imdbVotes")
-                val dvd = response.getString("DVD")
-                val boxOffice = response.getString("BoxOffice")
                 val imgUrl = response.getString("Poster")
+                val awards = response.getString("Awards")
+                val ratings = response.getJSONArray("Ratings")
+                var ratingsString = ""
+
+                for (i in 0 .. ratings.length() - 1) {
+                    val rating = ratings.optJSONObject(i)
+                    val source = rating.getString("Source")
+                    val value = rating.getString("Value")
+                    ratingsString += source + " calificó: " + value + "\n"
+                }
 
                 val txtTitle: TextView = findViewById(R.id.txtTitleMovie)
                 val txtYear: TextView = findViewById(R.id.txtYearMovie)
@@ -71,28 +78,24 @@ class MovieActivity : AppCompatActivity() {
                 val txtMetascore: TextView = findViewById(R.id.txtMetascoreMovie)
                 val txtImdbRating: TextView = findViewById(R.id.txtimdbRatingMovie)
                 val txtImdbVotes: TextView = findViewById(R.id.txtimdbVotesMovie)
-                val txtDvd: TextView = findViewById(R.id.txtDVDMovie)
-                val txtBoxOffice: TextView = findViewById(R.id.txtBoxOfficeMovie)
 
-                txtTitle.text = title
-                txtYear.text = year
-                txtRated.text = rated
-                txtReleased.text = released
-                txtRuntime.text = runtime
-                txtGenre.text = genre
-                txtDirector.text = director
-                txtWriter.text = writer
-                txtActors.text = actors
-                txtPlot.text = plot
-                txtLanguage.text = language
-                txtCountry.text = country
-                txtAwards.text = awards
-                txtRatings.text = ratings
-                txtMetascore.text = metascore
-                txtImdbRating.text = imdbRating
-                txtImdbVotes.text = imdbVotes
-                txtDvd.text = dvd
-                txtBoxOffice.text = boxOffice
+                txtTitle.text = Html.fromHtml("<b>Título</b>: " + title)
+                txtYear.text = Html.fromHtml("<b>Fecha</b>: " + year)
+                txtRated.text = Html.fromHtml("<b>Clasificado</b>: " + rated)
+                txtReleased.text = Html.fromHtml("<b>Liberado</b>: " + released)
+                txtRuntime.text = Html.fromHtml("<b>Tiempo de ejecución</b>: " + runtime)
+                txtGenre.text = Html.fromHtml("<b>Género</b>: " + genre)
+                txtDirector.text = Html.fromHtml("<b>Director</b>: " + director)
+                txtWriter.text = Html.fromHtml("<b>Escritor</b>: " + writer)
+                txtActors.text = Html.fromHtml("<b>Acotres</b>: " + actors)
+                txtPlot.text = Html.fromHtml("<b>Resumen</b>: " + plot)
+                txtLanguage.text = Html.fromHtml("<b>Lenguaje</b>: " + language)
+                txtCountry.text = Html.fromHtml("<b>País</b>: " + country)
+                txtAwards.text = Html.fromHtml("<b>Premios</b>: " + awards)
+                txtRatings.text = Html.fromHtml("<b>Calificaciones</b>: \n" + ratingsString)
+                txtMetascore.text = Html.fromHtml("<b>Puntuación meta</b>: " + metascore)
+                txtImdbRating.text = Html.fromHtml("<b>Calificaciones Imdb</b>: " + imdbRating)
+                txtImdbVotes.text = Html.fromHtml("<b>Votos Imdb</b>: " + imdbVotes)
 
                 DownloadImageFromInternet(findViewById(R.id.imgPoster))
                     .execute(imgUrl)
