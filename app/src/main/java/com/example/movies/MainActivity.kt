@@ -20,14 +20,9 @@ class MainActivity : AppCompatActivity() {
     private var lv: ListView? = null
     private var customeAdapter: CustomAdapter? = null
     private var imageModelArrayList: ArrayList<ImageModel>? = null
-    private val myImageList = intArrayOf(
-        R.drawable.pin,
-        R.drawable.pin,
-        R.drawable.pin,
-        R.drawable.pin
-    )
-    private val myImageNameList = arrayOf("Benz", "Bike", "Car", "Otro")
-
+    private var moviePosterList = arrayOf<String>()
+    private var movieNameList = arrayOf<String>()
+    private var movieYearList = arrayOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,23 +32,21 @@ class MainActivity : AppCompatActivity() {
 
         lv = findViewById(R.id.listMovies) as ListView
 
-        imageModelArrayList = populateList()
-        Log.d("hjhjh", imageModelArrayList!!.size.toString() + "")
-        customeAdapter = CustomAdapter(this, imageModelArrayList!!)
-        lv!!.adapter = customeAdapter
-
         btnBuscar.setOnClickListener() {
+            movieNameList = arrayOf<String>()
+            movieYearList = arrayOf<String>()
+            moviePosterList = arrayOf<String>()
             getMoviesInformation(txtBuscar.text.toString())
         }
     }
 
     private fun populateList(): ArrayList<ImageModel> {
         val list = ArrayList<ImageModel>()
-        for (i in 0..3) {
+        for (i in 0..movieNameList.size - 1) {
             val imageModel = ImageModel()
-            imageModel.setNames(myImageNameList[i])
-            imageModel.setYears(myImageNameList[i])
-            imageModel.setImage_drawables(myImageList[i])
+            imageModel.setNames(movieNameList[i])
+            imageModel.setYears(movieYearList[i])
+            imageModel.setImagesUrl(moviePosterList[i])
             list.add(imageModel)
         }
         return list
@@ -62,18 +55,23 @@ class MainActivity : AppCompatActivity() {
     fun getMoviesInformation(search: String) {
         val queue = Volley.newRequestQueue(this)
         val url = "https://www.omdbapi.com/?apikey=bcc3bc37&s=" + search
-        val txtRespuesta: TextView = findViewById(R.id.txtMostrar)
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
                 val movies = response.getJSONArray("Search")
-                var titles = ""
                 for (i in 0 .. movies.length() - 1) {
                     val movie = movies.optJSONObject(i)
-                    titles += movie.getString("Title") + "\n"
+                    val title = movie.getString("Title")
+                    val year = movie.getString("Year")
+                    val poster = movie.getString("Poster")
+                    movieNameList += title
+                    movieYearList += year
+                    moviePosterList += poster
                 }
-                txtRespuesta.text = titles
+                imageModelArrayList = populateList()
+                customeAdapter = CustomAdapter(this, imageModelArrayList!!)
+                lv!!.adapter = customeAdapter
             },
             Response.ErrorListener { error ->
                 Log.e("Error", error.toString())
@@ -81,4 +79,5 @@ class MainActivity : AppCompatActivity() {
         )
         queue.add(jsonObjectRequest)
     }
+
 }

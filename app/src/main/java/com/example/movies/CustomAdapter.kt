@@ -1,6 +1,10 @@
 package com.example.movies
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.AsyncTask
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +16,7 @@ import java.util.ArrayList
 class CustomAdapter(private val context: Context, private val imageModelArrayList: ArrayList<ImageModel>) : BaseAdapter() {
 
     override fun getViewTypeCount(): Int {
-        return count
+        return 1
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -54,17 +58,40 @@ class CustomAdapter(private val context: Context, private val imageModelArrayLis
 
         holder.movieName!!.setText(imageModelArrayList[position].getNames())
         holder.movieYear!!.setText(imageModelArrayList[position].getYears())
-        holder.iv!!.setImageResource(imageModelArrayList[position].getImage_drawables())
+        //holder.iv!!.setImageResource(imageModelArrayList[position].getImage_drawables())
+
+        holder.iv?.let {
+            DownloadImageFromInternet(it)
+                .execute(imageModelArrayList[position].getImagesUrl())
+        }
 
         return convertView
     }
 
     private inner class ViewHolder {
-
         var movieName: TextView? = null
         var movieYear: TextView? = null
         internal var iv: ImageView? = null
+    }
 
+    private inner class DownloadImageFromInternet(var imageView: ImageView) : AsyncTask<String, Void, Bitmap?>() {
+        init {
+        }
+        override fun doInBackground(vararg urls: String): Bitmap? {
+            val imageURL = urls[0]
+            var image: Bitmap? = null
+            try {
+                val `in` = java.net.URL(imageURL).openStream()
+                image = BitmapFactory.decodeStream(`in`)
+            } catch (e: Exception) {
+                Log.e("Error Message", e.message.toString())
+                e.printStackTrace()
+            }
+            return image
+        }
+        override fun onPostExecute(result: Bitmap?) {
+            imageView.setImageBitmap(result)
+        }
     }
 
 }
