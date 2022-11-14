@@ -11,6 +11,8 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.TextView
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -20,6 +22,9 @@ class MainActivity : AppCompatActivity() {
     private var lv: ListView? = null
     private var customeAdapter: CustomAdapter? = null
     private var imageModelArrayList: ArrayList<ImageModel>? = null
+    private var pagina: Int = 1
+    private val resultsPerPage: Int = 10
+    private var totalResults: Int = 0
     private var moviePosterList = arrayOf<String>()
     private var movieNameList = arrayOf<String>()
     private var movieYearList = arrayOf<String>()
@@ -29,7 +34,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val btnBuscar: Button = findViewById(R.id.btnBuscar)
+        val btnSiguiente: Button = findViewById(R.id.btnSiguiente)
+        val btnAnterior: Button = findViewById(R.id.btnAnterior)
         val txtBuscar: EditText = findViewById(R.id.txtBuscar)
+        val txtPagina: TextView = findViewById(R.id.txtPagina)
 
         fun changeActivity(movieImdbID: String) {
             val intent = Intent(this, MovieActivity::class.java).apply {
@@ -47,11 +55,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnBuscar.setOnClickListener() {
-            movieNameList = arrayOf<String>()
-            movieYearList = arrayOf<String>()
-            moviePosterList = arrayOf<String>()
-            movieImdbIDList = arrayOf<String>()
+            this.pagina = 1
+            txtPagina.text = "Página: " + this.pagina
             getMoviesInformation(txtBuscar.text.toString())
+        }
+
+        btnSiguiente.setOnClickListener() {
+            onClicSiguiente(txtBuscar.text.toString())
+        }
+
+        btnAnterior.setOnClickListener() {
+            onClicAnterior(txtBuscar.text.toString())
         }
     }
 
@@ -68,13 +82,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getMoviesInformation(search: String) {
-        val queue = Volley.newRequestQueue(this)
-        val url = "https://www.omdbapi.com/?apikey=bcc3bc37&s=" + search
+        movieNameList = arrayOf<String>()
+        movieYearList = arrayOf<String>()
+        moviePosterList = arrayOf<String>()
+        movieImdbIDList = arrayOf<String>()
 
+        val queue = Volley.newRequestQueue(this)
+        val url = "https://www.omdbapi.com/?apikey=bcc3bc37&s=" + search + "&page=" + this.pagina
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
                 val movies = response.getJSONArray("Search")
+                this.totalResults = response.getInt("totalResults")
                 for (i in 0 .. movies.length() - 1) {
                     val movie = movies.optJSONObject(i)
                     val title = movie.getString("Title")
@@ -95,6 +114,26 @@ class MainActivity : AppCompatActivity() {
             }
         )
         queue.add(jsonObjectRequest)
+    }
+
+    fun onClicSiguiente(search: String) {
+        if(this.pagina == (this.totalResults / this.resultsPerPage).toInt()) {
+            return Toast.makeText(applicationContext,"Está en la última página",Toast.LENGTH_LONG).show()
+        }
+        this.pagina += 1
+        val txtPagina: TextView = findViewById(R.id.txtPagina)
+        txtPagina.text = "Página: " + this.pagina
+        getMoviesInformation(search)
+    }
+
+    fun onClicAnterior(search: String) {
+        if (this.pagina == 1) {
+            return Toast.makeText(applicationContext,"Está en la primera página",Toast.LENGTH_LONG).show()
+        }
+        this.pagina -= 1
+        val txtPagina: TextView = findViewById(R.id.txtPagina)
+        txtPagina.text = "Página: " + this.pagina
+        getMoviesInformation(search)
     }
 
 }
