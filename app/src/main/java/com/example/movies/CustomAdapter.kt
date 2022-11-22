@@ -58,13 +58,11 @@ class CustomAdapter(private val context: Context, private val imageModelArrayLis
 
         holder.movieName!!.setText(imageModelArrayList[position].getNames())
         holder.movieYear!!.setText(imageModelArrayList[position].getYears())
-        //holder.iv!!.setImageResource(imageModelArrayList[position].getImage_drawables())
 
         holder.iv?.let {
             DownloadImageFromInternet(it)
                 .execute(imageModelArrayList[position].getImagesUrl())
         }
-
         return convertView
     }
 

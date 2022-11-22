@@ -25,13 +25,13 @@
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="66dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
                 android:text="Name"
-                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textSize="24sp"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtYear"
