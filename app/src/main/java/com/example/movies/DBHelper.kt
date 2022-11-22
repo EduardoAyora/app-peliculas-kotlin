@@ -36,16 +36,15 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
     // This method is for adding data in our database
-    fun addUser(user : String, password : String ): Boolean {
+    fun addUser(user : String, password : String ) {
         val values = ContentValues()
 
         values.put(USER_COl, user)
         values.put(PASSWORD_COL, password)
 
         val db = this.writableDatabase
-        val _success = db.insert(USER_TABLE_NAME, null, values)
+        db.insert(USER_TABLE_NAME, null, values)
         db.close()
-        return (Integer.parseInt("$_success") != -1)
     }
 
     @SuppressLint("Range")

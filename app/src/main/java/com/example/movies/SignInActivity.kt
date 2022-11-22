@@ -24,19 +24,16 @@ class SignInActivity : AppCompatActivity() {
             val password = txtContra.text.toString()
 
             if (username.isEmpty()) {
-                Log.i("Vacio", "vacio")
                 Toast.makeText(this,"El nombre de usuario es requerido", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
             val user = db.getUser(username)
             if (user != null) {
-                Log.i("Existe", "existe")
                 Toast.makeText(this,"El usuario ya existe", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             db.addUser(username, password)
-            Log.i("Guardado", "guardado")
 
             Toast.makeText(this, "Se ha registrado correctamente", Toast.LENGTH_LONG).show()
 
