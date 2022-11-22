@@ -3,6 +3,7 @@ package com.example.movies
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -23,18 +24,21 @@ class SignInActivity : AppCompatActivity() {
             val password = txtContra.text.toString()
 
             if (username.isEmpty()) {
+                Log.i("Vacio", "vacio")
                 Toast.makeText(this,"El nombre de usuario es requerido", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
             val user = db.getUser(username)
             if (user != null) {
+                Log.i("Existe", "existe")
                 Toast.makeText(this,"El usuario ya existe", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             db.addUser(username, password)
+            Log.i("Guardado", "guardado")
 
-            Toast.makeText(this, username + " agregado a la base de datos.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Se ha registrado correctamente", Toast.LENGTH_LONG).show()
 
             val intent = Intent(this, LoginActivity::class.java).apply {}
             startActivity(intent)

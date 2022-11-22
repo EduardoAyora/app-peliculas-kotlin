@@ -22,6 +22,12 @@ class LoginActivity : AppCompatActivity() {
             val db = DBHelper(this, null)
             val username = txtUser.text.toString()
             val user = db.getUser(username)
+            if (user != null) {
+                Log.i("user NAME",  user.username)
+            } else {
+                Log.i("user OBJECT",  "No user")
+            }
+
             if (user != null && user.password.equals(txtPassword.text.toString())) {
                 val intent = Intent(this, MainActivity::class.java).apply {}
                 startActivity(intent)
