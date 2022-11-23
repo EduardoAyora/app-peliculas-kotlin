@@ -62,8 +62,6 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
 
         holder.movieName!!.setText(itemModelArrayList[position].getNames())
         holder.movieYear!!.setText(itemModelArrayList[position].getYears())
-        Log.i("Posicion", position.toString())
-        Log.i("Es favorito", itemModelArrayList[position].isFavourite.toString())
         holder.checkFavourite!!.isChecked = itemModelArrayList[position].isFavourite
 
         holder.checkFavourite!!.setOnClickListener() {
@@ -71,6 +69,7 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
             itemModelArrayList[position].imdbID?.let { it1 -> Global.loggedUserId?.let { it2 ->
                 db.addOrRemoveFavourite(
                     it2, it1)
+                itemModelArrayList[position].isFavourite = !itemModelArrayList[position].isFavourite
             } }
         }
 

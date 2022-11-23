@@ -23,7 +23,7 @@ import com.example.movies.model.ItemModel
 class MainActivity : AppCompatActivity() {
     private var lv: ListView? = null
     private var customeAdapter: CustomAdapter? = null
-    private var imageModelArrayList: ArrayList<ItemModel>? = null
+    private var itemModelArrayList: ArrayList<ItemModel>? = null
     private var pagina: Int = 1
     private val resultsPerPage: Int = 10
     private var totalResults: Int = 0
@@ -114,8 +114,8 @@ class MainActivity : AppCompatActivity() {
                     moviePosterList += poster
                     movieImdbIDList += imdbID
                 }
-                imageModelArrayList = populateList()
-                customeAdapter = CustomAdapter(this, imageModelArrayList!!)
+                itemModelArrayList = populateList()
+                customeAdapter = CustomAdapter(this, itemModelArrayList!!)
                 lv!!.adapter = customeAdapter
             },
             Response.ErrorListener { error ->

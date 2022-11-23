@@ -52,9 +52,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
         val userMovies = this.getUserMovies(userId)
         if (userMovies.any { it.id == movieId }) {
-            db.delete(MOVIE_TABLE_NAME, "$ID_COL =\"?\", $USER_ID_COl =?",
-                arrayOf(movieId, userId.toString())
-            )
+            db.delete(MOVIE_TABLE_NAME, "$ID_COL = \"$movieId\" AND $USER_ID_COl = ${userId.toString()}", null)
         } else {
             val values = ContentValues()
             values.put(ID_COL, movieId)
