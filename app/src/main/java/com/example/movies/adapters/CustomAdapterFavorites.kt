@@ -66,6 +66,9 @@ class CustomAdapterFavorites(private val context: Context, private val itemModel
         holder.movieYear!!.setText(itemModelArrayList[position].getYears())
         holder.checkFavourite!!.isChecked = itemModelArrayList[position].isFavourite
 
+        val starList: View = convertView!!.findViewById(R.id.starsList)
+        starList.visibility = View.INVISIBLE
+
         holder.checkFavourite!!.setOnClickListener() {
             val db = DBHelper(this.context, null)
             itemModelArrayList[position].imdbID?.let { it1 -> Global.loggedUserId?.let { it2 ->
@@ -74,7 +77,8 @@ class CustomAdapterFavorites(private val context: Context, private val itemModel
                     it1,
                     itemModelArrayList[position].getNames(),
                     itemModelArrayList[position].getYears(),
-                    itemModelArrayList[position].getImagesUrl()
+                    itemModelArrayList[position].getImagesUrl(),
+                    0
                 )
                 reloadListItems()
             } }

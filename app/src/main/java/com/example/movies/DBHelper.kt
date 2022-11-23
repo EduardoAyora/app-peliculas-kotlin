@@ -50,7 +50,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         db.close()
     }
 
-    fun addOrRemoveFavourite(userId: Int, movieId: String, movieTitle: String, movieYear: String, movieImageUrl: String) {
+    fun addOrRemoveFavourite(userId: Int, movieId: String, movieTitle: String, movieYear: String, movieImageUrl: String, rating: Int) {
         val db = this.writableDatabase
 
         val userMovies = this.getUserMovies(userId)
@@ -63,8 +63,17 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
             values.put(TITLE_COl, movieTitle)
             values.put(YEAR_COl, movieYear)
             values.put(URL_COl, movieImageUrl)
+            values.put(RATING_COl, rating)
             db.insert(MOVIE_TABLE_NAME, null, values)
         }
+        db.close()
+    }
+
+    fun updateRating(userId: Int, movieId: String, rating: Int) {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(RATING_COl, rating)
+        db.update(MOVIE_TABLE_NAME, values, "$ID_COL = \"$movieId\" AND $USER_ID_COl = ${userId.toString()}", null)
         db.close()
     }
 

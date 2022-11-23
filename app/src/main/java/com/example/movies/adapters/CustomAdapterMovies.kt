@@ -3,15 +3,18 @@ package com.example.movies.adapters
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.Rating
 import android.os.AsyncTask
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.constraintlayout.widget.ConstraintSet.Layout
 import com.example.movies.DBHelper
 import com.example.movies.R
@@ -57,6 +60,12 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
             holder.iv = convertView.findViewById(R.id.imgView) as ImageView
             holder.checkFavourite = convertView.findViewById(R.id.chFavourite)
 
+            holder.star1 = convertView.findViewById(R.id.star1)
+            holder.star2 = convertView.findViewById(R.id.star2)
+            holder.star3 = convertView.findViewById(R.id.star3)
+            holder.star4 = convertView.findViewById(R.id.star4)
+            holder.star5 = convertView.findViewById(R.id.star5)
+
             convertView.tag = holder
         } else {
             // the getTag returns the viewHolder object set as a tag to the view
@@ -78,6 +87,20 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
         }
         verifyStartsEnabled()
 
+        fun verifyStarsNumber() {
+            holder.star1?.setImageResource(R.drawable.star_blanca)
+            holder.star2?.setImageResource(R.drawable.star_blanca)
+            holder.star3?.setImageResource(R.drawable.star_blanca)
+            holder.star4?.setImageResource(R.drawable.star_blanca)
+            holder.star5?.setImageResource(R.drawable.star_blanca)
+            if (itemModelArrayList[position].rating > 0) holder.star1?.setImageResource(R.drawable.star_amarilla)
+            if (itemModelArrayList[position].rating > 1) holder.star2?.setImageResource(R.drawable.star_amarilla)
+            if (itemModelArrayList[position].rating > 2) holder.star3?.setImageResource(R.drawable.star_amarilla)
+            if (itemModelArrayList[position].rating > 3) holder.star4?.setImageResource(R.drawable.star_amarilla)
+            if (itemModelArrayList[position].rating > 4) holder.star5?.setImageResource(R.drawable.star_amarilla)
+        }
+        verifyStarsNumber()
+
         holder.checkFavourite!!.setOnClickListener() {
             val db = DBHelper(this.context, null)
             itemModelArrayList[position].imdbID?.let { it1 -> Global.loggedUserId?.let { it2 ->
@@ -86,11 +109,40 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
                     it1,
                     itemModelArrayList[position].getNames(),
                     itemModelArrayList[position].getYears(),
-                    itemModelArrayList[position].getImagesUrl()
+                    itemModelArrayList[position].getImagesUrl(),
+                    0
                 )
                 itemModelArrayList[position].isFavourite = !itemModelArrayList[position].isFavourite
+                itemModelArrayList[position].rating = 0
                 verifyStartsEnabled()
+                verifyStarsNumber()
             } }
+        }
+
+        fun updateRating(rating: Int) {
+            val db = DBHelper(this.context, null)
+            Global.loggedUserId?.let { it1 -> itemModelArrayList[position].imdbID?.let { it2 ->
+                db.updateRating(it1,
+                    it2, rating)
+            } }
+            itemModelArrayList[position].rating = rating
+            verifyStarsNumber()
+        }
+
+        holder.star1?.setOnClickListener() {
+            updateRating(1)
+        }
+        holder.star2?.setOnClickListener() {
+            updateRating(2)
+        }
+        holder.star3?.setOnClickListener() {
+            updateRating(3)
+        }
+        holder.star4?.setOnClickListener() {
+            updateRating(4)
+        }
+        holder.star5?.setOnClickListener() {
+            updateRating(5)
         }
 
         holder.iv?.let {
@@ -105,6 +157,11 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
         var movieYear: TextView? = null
         internal var iv: ImageView? = null
         var checkFavourite: CheckBox? = null
+        var star1: AppCompatImageButton? = null
+        var star2: AppCompatImageButton? = null
+        var star3: AppCompatImageButton? = null
+        var star4: AppCompatImageButton? = null
+        var star5: AppCompatImageButton? = null
     }
 
     private inner class DownloadImageFromInternet(var imageView: ImageView) : AsyncTask<String, Void, Bitmap?>() {

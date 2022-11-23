@@ -86,6 +86,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun populateList(): ArrayList<ItemModel> {
+        val db = DBHelper(this, null)
+        val dbMovies = Global.loggedUserId?.let { db.getUserMovies(it) }
         val list = ArrayList<ItemModel>()
         for (i in 0..movieNameList.size - 1) {
             val itemModel = ItemModel()
@@ -93,6 +95,10 @@ class MainActivity : AppCompatActivity() {
             itemModel.setYears(movieYearList[i])
             itemModel.setImagesUrl(moviePosterList[i])
             itemModel.imdbID = movieImdbIDList[i]
+            val findedMovie = dbMovies?.find { it -> it.id == movieImdbIDList[i] }
+            if (findedMovie != null) {
+                itemModel.rating = findedMovie.rating
+            }
 
             val db = DBHelper(this, null)
             val userMovies = Global.loggedUserId?.let { db.getUserMovies(it) }

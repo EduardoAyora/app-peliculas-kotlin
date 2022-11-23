@@ -7,6 +7,7 @@ class ItemModel {
     var imageUrl: String? = null
     var imdbID: String? = null
     var isFavourite: Boolean = false
+    var rating: Int = 0
 
     fun getNames(): String {
         return name.toString()
