@@ -18,9 +18,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="10dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
 
             <TextView
                 android:id="@+id/txtTitle"
@@ -49,11 +49,69 @@
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <CheckBox
-                    android:focusable="false"
                     android:id="@+id/chFavourite"
                     style="?android:attr/starStyle"
                     android:layout_width="80dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:focusable="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/starsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/star1"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:background="#00ffffff"
+                    android:focusable="false"
+                    android:onClick="onToggleStar"
+                    android:paddingLeft="10dp"
+                    android:src="@drawable/star_blanca" />
+
+                <ImageButton
+                    android:id="@+id/star2"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:background="#00ffffff"
+                    android:focusable="false"
+                    android:onClick="onToggleStar"
+                    android:paddingLeft="10dp"
+                    android:src="@drawable/star_blanca" />
+
+                <ImageButton
+                    android:id="@+id/star3"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:background="#00ffffff"
+                    android:focusable="false"
+                    android:onClick="onToggleStar"
+                    android:paddingLeft="10dp"
+                    android:src="@drawable/star_blanca" />
+
+                <ImageButton
+                    android:id="@+id/star4"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:background="#00ffffff"
+                    android:focusable="false"
+                    android:onClick="onToggleStar"
+                    android:paddingLeft="10dp"
+                    android:src="@drawable/star_blanca" />
+
+                <ImageButton
+                    android:id="@+id/star5"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:background="#00ffffff"
+                    android:focusable="false"
+                    android:onClick="onToggleStar"
+                    android:paddingLeft="10dp"
+                    android:src="@drawable/star_blanca" />
 
             </LinearLayout>
 

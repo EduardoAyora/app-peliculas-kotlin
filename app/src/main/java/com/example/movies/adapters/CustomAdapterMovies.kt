@@ -12,6 +12,7 @@ import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintSet.Layout
 import com.example.movies.DBHelper
 import com.example.movies.R
 import com.example.movies.model.Global
@@ -66,6 +67,17 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
         holder.movieYear!!.setText(itemModelArrayList[position].getYears())
         holder.checkFavourite!!.isChecked = itemModelArrayList[position].isFavourite
 
+
+        val starList: View = convertView!!.findViewById(R.id.starsList)
+        fun verifyStartsEnabled() {
+            if (!itemModelArrayList[position].isFavourite) {
+                starList.visibility = View.INVISIBLE
+            } else {
+                starList.visibility = View.VISIBLE
+            }
+        }
+        verifyStartsEnabled()
+
         holder.checkFavourite!!.setOnClickListener() {
             val db = DBHelper(this.context, null)
             itemModelArrayList[position].imdbID?.let { it1 -> Global.loggedUserId?.let { it2 ->
@@ -77,6 +89,7 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
                     itemModelArrayList[position].getImagesUrl()
                 )
                 itemModelArrayList[position].isFavourite = !itemModelArrayList[position].isFavourite
+                verifyStartsEnabled()
             } }
         }
 
