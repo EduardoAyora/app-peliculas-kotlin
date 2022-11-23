@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.movies.model.Comment
 import com.example.movies.model.Movie
 import com.example.movies.model.User
 
@@ -29,11 +30,19 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
                 URL_COl + " TEXT," +
                 "FOREIGN KEY(" + USER_ID_COl + ") REFERENCES " + USER_TABLE_NAME + "(" + ID_COL + "))")
 
+        val queryComment = ("CREATE TABLE " + COMMENT_TABLE_NAME + " ("
+                + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TEXT_COL + " TEXT," +
+                MOVIE_ID_COL + " TEXT," +
+                "FOREIGN KEY(" + MOVIE_ID_COL + ") REFERENCES " + MOVIE_TABLE_NAME + "(" + ID_COL + "))")
+
         db.execSQL(queryUser)
         db.execSQL(queryMovie)
+        db.execSQL(queryComment)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
+        db.execSQL("DROP TABLE IF EXISTS " + COMMENT_TABLE_NAME)
         db.execSQL("DROP TABLE IF EXISTS " + MOVIE_TABLE_NAME)
         db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME)
         onCreate(db)
@@ -124,9 +133,48 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         return movies
     }
 
+    fun addComment(text: String, movieId: String) {
+        val values = ContentValues()
+
+        values.put(TEXT_COL, text)
+        values.put(MOVIE_ID_COL, movieId)
+
+        val db = this.writableDatabase
+        db.insert(COMMENT_TABLE_NAME, null, values)
+        db.close()
+    }
+
+    fun deleteComment(id: Int) {
+        val db = this.writableDatabase
+        db.delete(COMMENT_TABLE_NAME, "$ID_COL = $id", null)
+        db.close()
+    }
+
+    @SuppressLint("Range")
+    fun getMovieComments(movieId: String): ArrayList<Comment> {
+        val comments = ArrayList<Comment>()
+        val db = writableDatabase
+        val selectQuery = "SELECT * FROM $COMMENT_TABLE_NAME WHERE $MOVIE_ID_COL = \"$movieId\""
+        val cursor = db.rawQuery(selectQuery, null)
+        if (cursor != null) {
+            cursor.moveToFirst()
+            while (cursor.isAfterLast == false) {
+                val comment = Comment()
+                val idString = cursor.getString(cursor.getColumnIndex(ID_COL))
+                Log.i("id get all", idString)
+                if (idString != null && idString != "") comment.id = Integer.parseInt(idString)
+                comment.text = cursor.getString(cursor.getColumnIndex(TEXT_COL))
+                comments.add(comment)
+                cursor.moveToNext()
+            }
+        }
+        cursor.close()
+        return comments
+    }
+
     companion object {
         private val DATABASE_NAME = "peliculas"
-        private val DATABASE_VERSION = 10
+        private val DATABASE_VERSION = 13
         val USER_TABLE_NAME = "usuario"
         val ID_COL = "id"
         val USER_COl = "username"
@@ -139,5 +187,9 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         val YEAR_COl = "year"
         val URL_COl = "url"
         val USER_ID_COl = "user_id"
+
+        val COMMENT_TABLE_NAME = "comentario"
+        val TEXT_COL = "text"
+        val MOVIE_ID_COL = "movie_id"
     }
 }

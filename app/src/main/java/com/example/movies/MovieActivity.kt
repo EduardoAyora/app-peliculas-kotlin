@@ -1,5 +1,6 @@
 package com.example.movies
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
@@ -21,9 +22,18 @@ class MovieActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
 
+        val verResenias: Button = findViewById(R.id.btnVerResenias)
+
         val imdbID = intent.getStringExtra("imdbID")
         if (imdbID != null) {
             getMovieInformation(imdbID)
+        }
+
+        verResenias.setOnClickListener() {
+            val intent = Intent(this, ReviewsActivity::class.java).apply {
+                putExtra("imdbID", imdbID)
+            }
+            startActivity(intent)
         }
     }
 

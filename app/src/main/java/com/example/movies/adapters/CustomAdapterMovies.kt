@@ -3,7 +3,6 @@ package com.example.movies.adapters
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.Rating
 import android.os.AsyncTask
 import android.os.Build
 import android.util.Log
@@ -11,13 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.constraintlayout.widget.ConstraintSet.Layout
 import com.example.movies.DBHelper
 import com.example.movies.R
 import com.example.movies.model.Global
@@ -59,7 +56,7 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
             convertView = inflater.inflate(R.layout.lv_item, null, true)
 
             holder.movieName = convertView!!.findViewById(R.id.txtTitle) as TextView
-            holder.movieYear = convertView!!.findViewById(R.id.txtYear) as TextView
+            holder.movieYear = convertView!!.findViewById(R.id.txtCommentWrited) as TextView
             holder.iv = convertView.findViewById(R.id.imgView) as ImageView
             holder.checkFavourite = convertView.findViewById(R.id.chFavourite)
 
@@ -67,7 +64,7 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
             holder.star2 = convertView.findViewById(R.id.star2)
             holder.star3 = convertView.findViewById(R.id.star3)
             holder.star4 = convertView.findViewById(R.id.star4)
-            holder.star5 = convertView.findViewById(R.id.star5)
+            holder.star5 = convertView.findViewById(R.id.trashIcon)
 
             convertView.tag = holder
         } else {

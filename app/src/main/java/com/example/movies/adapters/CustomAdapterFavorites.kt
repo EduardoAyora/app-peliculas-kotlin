@@ -52,7 +52,7 @@ class CustomAdapterFavorites(private val context: Context, private val itemModel
             convertView = inflater.inflate(R.layout.lv_item, null, true)
 
             holder.movieName = convertView!!.findViewById(R.id.txtTitle) as TextView
-            holder.movieYear = convertView!!.findViewById(R.id.txtYear) as TextView
+            holder.movieYear = convertView!!.findViewById(R.id.txtCommentWrited) as TextView
             holder.iv = convertView.findViewById(R.id.imgView) as ImageView
             holder.checkFavourite = convertView.findViewById(R.id.chFavourite)
 
