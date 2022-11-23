@@ -9,11 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.movies.model.Global
+import com.example.movies.model.ItemModel
 import java.util.ArrayList
 
-class CustomAdapter(private val context: Context, private val imageModelArrayList: ArrayList<ImageModel>) : BaseAdapter() {
+class CustomAdapter(private val context: Context, private val itemModelArrayList: ArrayList<ItemModel>) : BaseAdapter() {
 
     override fun getViewTypeCount(): Int {
         return 1
@@ -25,11 +28,11 @@ class CustomAdapter(private val context: Context, private val imageModelArrayLis
     }
 
     override fun getCount(): Int {
-        return imageModelArrayList.size
+        return itemModelArrayList.size
     }
 
     override fun getItem(position: Int): Any {
-        return imageModelArrayList[position]
+        return itemModelArrayList[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -49,6 +52,7 @@ class CustomAdapter(private val context: Context, private val imageModelArrayLis
             holder.movieName = convertView!!.findViewById(R.id.txtTitle) as TextView
             holder.movieYear = convertView!!.findViewById(R.id.txtYear) as TextView
             holder.iv = convertView.findViewById(R.id.imgView) as ImageView
+            holder.checkFavourite = convertView.findViewById(R.id.chFavourite)
 
             convertView.tag = holder
         } else {
@@ -56,12 +60,23 @@ class CustomAdapter(private val context: Context, private val imageModelArrayLis
             holder = convertView.tag as ViewHolder
         }
 
-        holder.movieName!!.setText(imageModelArrayList[position].getNames())
-        holder.movieYear!!.setText(imageModelArrayList[position].getYears())
+        holder.movieName!!.setText(itemModelArrayList[position].getNames())
+        holder.movieYear!!.setText(itemModelArrayList[position].getYears())
+        Log.i("Posicion", position.toString())
+        Log.i("Es favorito", itemModelArrayList[position].isFavourite.toString())
+        holder.checkFavourite!!.isChecked = itemModelArrayList[position].isFavourite
+
+        holder.checkFavourite!!.setOnClickListener() {
+            val db = DBHelper(this.context, null)
+            itemModelArrayList[position].imdbID?.let { it1 -> Global.loggedUserId?.let { it2 ->
+                db.addOrRemoveFavourite(
+                    it2, it1)
+            } }
+        }
 
         holder.iv?.let {
             DownloadImageFromInternet(it)
-                .execute(imageModelArrayList[position].getImagesUrl())
+                .execute(itemModelArrayList[position].getImagesUrl())
         }
         return convertView
     }
@@ -70,6 +85,7 @@ class CustomAdapter(private val context: Context, private val imageModelArrayLis
         var movieName: TextView? = null
         var movieYear: TextView? = null
         internal var iv: ImageView? = null
+        var checkFavourite: CheckBox? = null
     }
 
     private inner class DownloadImageFromInternet(var imageView: ImageView) : AsyncTask<String, Void, Bitmap?>() {

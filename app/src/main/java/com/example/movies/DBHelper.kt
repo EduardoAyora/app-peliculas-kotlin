@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.movies.model.Movie
 import com.example.movies.model.User
 
 class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
@@ -19,7 +20,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
                 PASSWORD_COL + " TEXT" + ")")
 
         val queryMovie = ("CREATE TABLE " + MOVIE_TABLE_NAME + " ("
-                + ID_COL + " INTEGER PRIMARY KEY, " +
+                + ID_COL + " TEXT PRIMARY KEY, " +
                 RATING_COl + " INTEGER," +
                 USER_ID_COl + " INTEGER," +
                 REVIEW_COl + " TEXT," +
@@ -35,7 +36,6 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         onCreate(db)
     }
 
-    // This method is for adding data in our database
     fun addUser(user : String, password : String ) {
         val values = ContentValues()
 
@@ -44,6 +44,23 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
         val db = this.writableDatabase
         db.insert(USER_TABLE_NAME, null, values)
+        db.close()
+    }
+
+    fun addOrRemoveFavourite(userId: Int, movieId: String) {
+        val db = this.writableDatabase
+
+        val userMovies = this.getUserMovies(userId)
+        if (userMovies.any { it.id == movieId }) {
+            db.delete(MOVIE_TABLE_NAME, "$ID_COL =\"?\", $USER_ID_COl =?",
+                arrayOf(movieId, userId.toString())
+            )
+        } else {
+            val values = ContentValues()
+            values.put(ID_COL, movieId)
+            values.put(USER_ID_COl, userId)
+            db.insert(MOVIE_TABLE_NAME, null, values)
+        }
         db.close()
     }
 
@@ -67,9 +84,32 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         return user
     }
 
+    @SuppressLint("Range")
+    fun getUserMovies(userId: Int): List<Movie> {
+        val movies = ArrayList<Movie>()
+        val db = writableDatabase
+        val selectQuery = "SELECT * FROM $MOVIE_TABLE_NAME WHERE $USER_ID_COl = $userId"
+        val cursor = db.rawQuery(selectQuery, null)
+        if (cursor != null) {
+            cursor.moveToFirst()
+            while (cursor.moveToNext()) {
+                val movie = Movie()
+                movie.id = cursor.getString(cursor.getColumnIndex(ID_COL))
+                val ratingString = cursor.getString(cursor.getColumnIndex(RATING_COl))
+                if (ratingString != null && ratingString != "") movie.rating = Integer.parseInt(ratingString)
+                val review = cursor.getString(cursor.getColumnIndex(REVIEW_COl))
+                if (review != null) movie.review = review
+                movie.userId = userId
+                movies.add(movie)
+            }
+        }
+        cursor.close()
+        return movies
+    }
+
     companion object {
         private val DATABASE_NAME = "peliculas"
-        private val DATABASE_VERSION = 6
+        private val DATABASE_VERSION = 8
         val USER_TABLE_NAME = "usuario"
         val ID_COL = "id"
         val USER_COl = "username"

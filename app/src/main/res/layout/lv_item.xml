@@ -50,7 +50,7 @@
 
                 <CheckBox
                     android:focusable="false"
-                    android:id="@+id/star"
+                    android:id="@+id/chFavourite"
                     style="?android:attr/starStyle"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content" />

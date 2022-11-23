@@ -3,10 +3,10 @@ package com.example.movies
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.movies.model.Global
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
             val user = db.getUser(username)
 
             if (user != null && user.password.equals(txtPassword.text.toString())) {
+                Global.loggedUserId = user.id
                 val intent = Intent(this, MainActivity::class.java).apply {}
                 startActivity(intent)
             } else {

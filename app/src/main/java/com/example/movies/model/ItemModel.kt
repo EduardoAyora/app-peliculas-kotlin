@@ -1,10 +1,12 @@
-package com.example.movies
+package com.example.movies.model
 
-class ImageModel {
+class ItemModel {
 
     var name: String? = null
     var year: String? = null
     var imageUrl: String? = null
+    var imdbID: String? = null
+    var isFavourite: Boolean = false
 
     fun getNames(): String {
         return name.toString()

@@ -17,11 +17,13 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.movies.model.Global
+import com.example.movies.model.ItemModel
 
 class MainActivity : AppCompatActivity() {
     private var lv: ListView? = null
     private var customeAdapter: CustomAdapter? = null
-    private var imageModelArrayList: ArrayList<ImageModel>? = null
+    private var imageModelArrayList: ArrayList<ItemModel>? = null
     private var pagina: Int = 1
     private val resultsPerPage: Int = 10
     private var totalResults: Int = 0
@@ -69,14 +71,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateList(): ArrayList<ImageModel> {
-        val list = ArrayList<ImageModel>()
+    private fun populateList(): ArrayList<ItemModel> {
+        val list = ArrayList<ItemModel>()
         for (i in 0..movieNameList.size - 1) {
-            val imageModel = ImageModel()
-            imageModel.setNames(movieNameList[i])
-            imageModel.setYears(movieYearList[i])
-            imageModel.setImagesUrl(moviePosterList[i])
-            list.add(imageModel)
+            val itemModel = ItemModel()
+            itemModel.setNames(movieNameList[i])
+            itemModel.setYears(movieYearList[i])
+            itemModel.setImagesUrl(moviePosterList[i])
+            itemModel.imdbID = movieImdbIDList[i]
+
+            val db = DBHelper(this, null)
+            val userMovies = Global.loggedUserId?.let { db.getUserMovies(it) }
+            if (userMovies != null) {
+                itemModel.isFavourite = userMovies.any { it.id == movieImdbIDList[i] }
+            }
+            list.add(itemModel)
         }
         return list
     }
