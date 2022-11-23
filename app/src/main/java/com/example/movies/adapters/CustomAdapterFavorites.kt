@@ -1,4 +1,4 @@
-package com.example.movies
+package com.example.movies.adapters
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -12,11 +12,13 @@ import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.movies.DBHelper
+import com.example.movies.R
 import com.example.movies.model.Global
 import com.example.movies.model.ItemModel
 import java.util.ArrayList
 
-class CustomAdapter(private val context: Context, private val itemModelArrayList: ArrayList<ItemModel>) : BaseAdapter() {
+class CustomAdapterFavorites(private val context: Context, private val itemModelArrayList: ArrayList<ItemModel>, private val reloadListItems: () -> Unit) : BaseAdapter() {
 
     override fun getViewTypeCount(): Int {
         return 1
@@ -74,7 +76,7 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
                     itemModelArrayList[position].getYears(),
                     itemModelArrayList[position].getImagesUrl()
                 )
-                itemModelArrayList[position].isFavourite = !itemModelArrayList[position].isFavourite
+                reloadListItems()
             } }
         }
 

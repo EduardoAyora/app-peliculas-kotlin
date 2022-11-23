@@ -20,6 +20,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.movies.adapters.CustomAdapter
 import com.example.movies.model.Global
 import com.example.movies.model.ItemModel
 
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java).apply {}
             startActivity(intent)
         }
+        reloadItems()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,15 +128,19 @@ class MainActivity : AppCompatActivity() {
                     moviePosterList += poster
                     movieImdbIDList += imdbID
                 }
-                itemModelArrayList = populateList()
-                customeAdapter = CustomAdapter(this, itemModelArrayList!!)
-                lv!!.adapter = customeAdapter
+                reloadItems()
             },
             Response.ErrorListener { error ->
                 Log.e("Error", error.toString())
             }
         )
         queue.add(jsonObjectRequest)
+    }
+
+    fun reloadItems() {
+        itemModelArrayList = populateList()
+        customeAdapter = CustomAdapter(this, itemModelArrayList!!)
+        lv!!.adapter = customeAdapter
     }
 
     fun onClicSiguiente(search: String) {
