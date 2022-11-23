@@ -24,6 +24,9 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
                 RATING_COl + " INTEGER," +
                 USER_ID_COl + " INTEGER," +
                 REVIEW_COl + " TEXT," +
+                TITLE_COl + " TEXT," +
+                YEAR_COl + " TEXT," +
+                URL_COl + " TEXT," +
                 "FOREIGN KEY(" + USER_ID_COl + ") REFERENCES " + USER_TABLE_NAME + "(" + ID_COL + "))")
 
         db.execSQL(queryUser)
@@ -47,7 +50,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         db.close()
     }
 
-    fun addOrRemoveFavourite(userId: Int, movieId: String) {
+    fun addOrRemoveFavourite(userId: Int, movieId: String, movieTitle: String, movieYear: String, movieImageUrl: String) {
         val db = this.writableDatabase
 
         val userMovies = this.getUserMovies(userId)
@@ -57,6 +60,9 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
             val values = ContentValues()
             values.put(ID_COL, movieId)
             values.put(USER_ID_COl, userId)
+            values.put(TITLE_COl, movieTitle)
+            values.put(YEAR_COl, movieYear)
+            values.put(URL_COl, movieImageUrl)
             db.insert(MOVIE_TABLE_NAME, null, values)
         }
         db.close()
@@ -90,7 +96,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         val cursor = db.rawQuery(selectQuery, null)
         if (cursor != null) {
             cursor.moveToFirst()
-            while (cursor.moveToNext()) {
+            while (cursor.isAfterLast == false) {
                 val movie = Movie()
                 movie.id = cursor.getString(cursor.getColumnIndex(ID_COL))
                 val ratingString = cursor.getString(cursor.getColumnIndex(RATING_COl))
@@ -98,7 +104,11 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
                 val review = cursor.getString(cursor.getColumnIndex(REVIEW_COl))
                 if (review != null) movie.review = review
                 movie.userId = userId
+                movie.title = cursor.getString(cursor.getColumnIndex(TITLE_COl))
+                movie.year = cursor.getString(cursor.getColumnIndex(YEAR_COl))
+                movie.imageUrl = cursor.getString(cursor.getColumnIndex(URL_COl))
                 movies.add(movie)
+                cursor.moveToNext()
             }
         }
         cursor.close()
@@ -107,7 +117,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
     companion object {
         private val DATABASE_NAME = "peliculas"
-        private val DATABASE_VERSION = 8
+        private val DATABASE_VERSION = 10
         val USER_TABLE_NAME = "usuario"
         val ID_COL = "id"
         val USER_COl = "username"
@@ -116,6 +126,9 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         val MOVIE_TABLE_NAME = "pelicula"
         val RATING_COl = "rating"
         val REVIEW_COl = "review"
+        val TITLE_COl = "title"
+        val YEAR_COl = "year"
+        val URL_COl = "url"
         val USER_ID_COl = "user_id"
     }
 }

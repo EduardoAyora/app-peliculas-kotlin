@@ -35,15 +35,8 @@ class MainActivity : AppCompatActivity() {
     private var movieYearList = arrayOf<String>()
     private var movieImdbIDList = arrayOf<String>()
 
-    override fun onActivityReenter(resultCode: Int, data: Intent?) {
-        super.onActivityReenter(resultCode, data)
-
-        Log.i("user id reenter", Global.loggedUserId.toString())
-    }
-
     override fun onStart() {
         super.onStart()
-        Log.i("user id", Global.loggedUserId.toString())
         if (Global.loggedUserId == null) {
             val intent = Intent(this, LoginActivity::class.java).apply {}
             startActivity(intent)

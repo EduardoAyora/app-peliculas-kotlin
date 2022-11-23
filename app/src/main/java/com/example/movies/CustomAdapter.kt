@@ -68,7 +68,12 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
             val db = DBHelper(this.context, null)
             itemModelArrayList[position].imdbID?.let { it1 -> Global.loggedUserId?.let { it2 ->
                 db.addOrRemoveFavourite(
-                    it2, it1)
+                    it2,
+                    it1,
+                    itemModelArrayList[position].getNames(),
+                    itemModelArrayList[position].getYears(),
+                    itemModelArrayList[position].getImagesUrl()
+                )
                 itemModelArrayList[position].isFavourite = !itemModelArrayList[position].isFavourite
             } }
         }
