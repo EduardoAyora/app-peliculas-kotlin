@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.Rating
 import android.os.AsyncTask
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.constraintlayout.widget.ConstraintSet.Layout
 import com.example.movies.DBHelper
@@ -45,6 +47,7 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
         return 0
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
         val holder: ViewHolder
@@ -98,6 +101,18 @@ class CustomAdapter(private val context: Context, private val itemModelArrayList
             if (itemModelArrayList[position].rating > 2) holder.star3?.setImageResource(R.drawable.star_amarilla)
             if (itemModelArrayList[position].rating > 3) holder.star4?.setImageResource(R.drawable.star_amarilla)
             if (itemModelArrayList[position].rating > 4) holder.star5?.setImageResource(R.drawable.star_amarilla)
+
+            holder.star1?.isFocusable = false
+            holder.star2?.isFocusable = false
+            holder.star3?.isFocusable = false
+            holder.star4?.isFocusable = false
+            holder.star5?.isFocusable = false
+
+            holder.star1?.isFocusableInTouchMode = false
+            holder.star2?.isFocusableInTouchMode = false
+            holder.star3?.isFocusableInTouchMode = false
+            holder.star4?.isFocusableInTouchMode = false
+            holder.star5?.isFocusableInTouchMode = false
         }
         verifyStarsNumber()
 
