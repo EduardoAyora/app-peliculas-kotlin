@@ -5,6 +5,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
@@ -32,9 +35,25 @@ class MainActivity : AppCompatActivity() {
     private var movieYearList = arrayOf<String>()
     private var movieImdbIDList = arrayOf<String>()
 
+    override fun onActivityReenter(resultCode: Int, data: Intent?) {
+        super.onActivityReenter(resultCode, data)
+
+        Log.i("user id reenter", Global.loggedUserId.toString())
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.i("user id", Global.loggedUserId.toString())
+        if (Global.loggedUserId == null) {
+            val intent = Intent(this, LoginActivity::class.java).apply {}
+            startActivity(intent)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val btnBuscar: Button = findViewById(R.id.btnBuscar)
         val btnSiguiente: Button = findViewById(R.id.btnSiguiente)
         val btnAnterior: Button = findViewById(R.id.btnAnterior)
@@ -143,6 +162,28 @@ class MainActivity : AppCompatActivity() {
         val txtPagina: TextView = findViewById(R.id.txtPagina)
         txtPagina.text = "Página: " + this.pagina
         getMoviesInformation(search)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.game_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menuFavoritos -> {
+                val intent = Intent(this, FavoritesActivity::class.java).apply {}
+                startActivity(intent)
+                true
+            }
+            R.id.menuSalir -> {
+                Global.loggedUserId = null
+                val intent = Intent(this, LoginActivity::class.java).apply {}
+                startActivity(intent)
+                true
+            } else -> super.onOptionsItemSelected(item)
+        }
     }
 
 }
