@@ -31,11 +31,18 @@
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <ImageButton
-                    android:id="@+id/trashIcon"
-                    android:layout_width="80dp"
+                    android:id="@+id/wppIcon"
+                    android:layout_width="60dp"
                     android:layout_height="match_parent"
                     android:background="#00ffffff"
-                    android:paddingLeft="10dp"
+                    android:src="@drawable/wpp" />
+
+                <ImageButton
+                    android:id="@+id/trashIcon"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:background="#00ffffff"
+                    android:paddingRight="10dp"
                     android:src="@drawable/trash" />
 
             </LinearLayout>

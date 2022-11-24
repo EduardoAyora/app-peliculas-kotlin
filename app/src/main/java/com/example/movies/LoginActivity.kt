@@ -18,6 +18,14 @@ class LoginActivity : AppCompatActivity() {
         val txtUser: EditText = findViewById(R.id.txtUsuario)
         val txtPassword: EditText = findViewById(R.id.txtContrasenia)
 
+        fun sendMessage(message: String) {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.setPackage("com.whatsapp")
+            intent.putExtra(Intent.EXTRA_TEXT, message)
+            startActivity(intent)
+        }
+
         btnIngresar.setOnClickListener() {
             val db = DBHelper(this, null)
             val username = txtUser.text.toString()

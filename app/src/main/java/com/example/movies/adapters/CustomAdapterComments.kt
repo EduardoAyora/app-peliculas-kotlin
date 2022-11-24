@@ -1,6 +1,7 @@
 package com.example.movies.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,11 @@ import com.example.movies.R
 import com.example.movies.model.Comment
 import kotlin.collections.ArrayList
 
-class CustomAdapterComments(private val context: Context, private val commentsArrayList: ArrayList<Comment>, private val reloadListItems: () -> Unit) : BaseAdapter() {
+class CustomAdapterComments(private val context: Context,
+                            private val commentsArrayList: ArrayList<Comment>,
+                            private val reloadListItems: () -> Unit,
+                            private val wppSend: (message: String) -> Unit
+) : BaseAdapter() {
 
     override fun getViewTypeCount(): Int {
         return 1
@@ -58,13 +63,16 @@ class CustomAdapterComments(private val context: Context, private val commentsAr
         holder.text!!.setText(commentsArrayList[position].text)
 
         val deleteButton: AppCompatImageButton = convertView!!.findViewById(R.id.trashIcon)
-
         deleteButton!!.setOnClickListener() {
             val db = DBHelper(this.context, null)
-            Log.i("id", commentsArrayList[position].id.toString())
             commentsArrayList[position].id?.let { it1 -> db.deleteComment(it1) }
             reloadListItems()
         }
+        val sendButton: AppCompatImageButton = convertView!!.findViewById(R.id.wppIcon)
+        sendButton!!.setOnClickListener() {
+            wppSend(commentsArrayList[position].text)
+        }
+
         return convertView
     }
 

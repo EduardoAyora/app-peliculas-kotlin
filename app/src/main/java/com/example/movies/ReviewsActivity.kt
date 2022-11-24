@@ -1,5 +1,6 @@
 package com.example.movies
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -22,13 +23,24 @@ class ReviewsActivity : AppCompatActivity() {
 
         val imdbID = intent.getStringExtra("imdbID")
 
+        fun sendMessage(message: String) {
+            val db = DBHelper(this, null)
+            val movies = Global.loggedUserId?.let { db.getUserMovies(it) }
+            val movieTitle: String = movies?.find { it.id == imdbID }?.title ?: ""
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.setPackage("com.whatsapp")
+            intent.putExtra(Intent.EXTRA_TEXT, "La película $movieTitle tiene la siguiente reseña: $message")
+            startActivity(intent)
+        }
+
         var customeAdapter: CustomAdapterComments? = null
         fun reloadItems() {
             if (imdbID != null) {
                 val db = DBHelper(this, null)
                 this.commentsList = db.getMovieComments(imdbID)
             }
-            customeAdapter = commentsList?.let { CustomAdapterComments(this, it, ::reloadItems) }
+            customeAdapter = commentsList?.let { CustomAdapterComments(this, it, ::reloadItems, ::sendMessage) }
             val lv = findViewById(R.id.listComments) as ListView
             lv.adapter = customeAdapter
         }
