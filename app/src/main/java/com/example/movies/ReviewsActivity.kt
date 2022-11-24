@@ -10,6 +10,7 @@ import com.example.movies.adapters.CustomAdapterFavorites
 import com.example.movies.model.Comment
 import com.example.movies.model.Global
 import com.example.movies.model.ItemModel
+import com.example.movies.model.Movie
 
 class ReviewsActivity : AppCompatActivity() {
     private var commentsList: ArrayList<Comment>? = null
@@ -22,6 +23,12 @@ class ReviewsActivity : AppCompatActivity() {
         val txtComment: EditText = findViewById(R.id.txtCommentToAdd)
 
         val imdbID = intent.getStringExtra("imdbID")
+
+        val db = DBHelper(this, null)
+        val movies = Global.loggedUserId?.let { db.getUserMovies(it) }
+        val movieInFavorites: Movie? = movies?.find { it.id == imdbID }
+        if (movieInFavorites == null) btnAddComment.isEnabled = false
+        if (movieInFavorites != null && movieInFavorites.rating == 0) btnAddComment.isEnabled = false
 
         fun sendMessage(message: String) {
             val db = DBHelper(this, null)
@@ -50,6 +57,7 @@ class ReviewsActivity : AppCompatActivity() {
             val db = DBHelper(this, null)
             if (imdbID != null) {
                 db.addComment(txtComment.text.toString(), imdbID)
+
             }
             txtComment.setText("")
             reloadItems()
